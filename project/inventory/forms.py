@@ -1,10 +1,10 @@
 # project/vendor/forms.py
 
-
+from project.models import Vendor, PurchaseOrder, LineItem, Component, Borrow
 from flask_wtf import Form
 from wtforms import TextField, SelectField, IntegerField, DateField
 from wtforms.validators import DataRequired, Optional
-from project.models import Vendor, PurchaseOrder, LineItem, Component, Borrow
+
 STATE_ABBREV = ('AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                 'HI', 'ID', 'IL', 'IN', 'IO', 'KS', 'KY', 'LA', 'ME', 'MD',
                 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
@@ -29,13 +29,9 @@ class VendorCreateForm(Form):
 
 
 class PurchaseOrderForm(Form):
-    item = SelectField('Item Id', choices=[(str('(')+str(item.id)+str(')  ')+str(item.name),
-                                            str('(')+str(item.id)+str(')  ')+str(item.name))
-                                            for item in Component.query.all()],validators=[DataRequired()])
+    vendor_id = SelectField('Vendor ID', choices=[('Choose Vendor','Choose Vendor')],validators=[DataRequired()])
+    item = SelectField('Item Id', choices=[('Choose Item','Choose Item')],validators=[DataRequired()])
     quantity = IntegerField('Quantity', validators=[DataRequired()])
-    vendor_id = SelectField('Vendor ID', choices=[(str('(')+str(vendor.id)+str(')  ')+str(vendor.name),
-                                                    str('(')+str(vendor.id)+str(')  ')+str(vendor.name))
-                                                    for vendor in Vendor.query.all()],validators=[DataRequired()])
     unit_price = TextField('Unit Price', validators=[DataRequired()])
 
 class BorrowForm(Form):

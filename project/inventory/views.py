@@ -103,12 +103,14 @@ def view_purchase_order(po_id=None):
                            result=purchase_orders)
 
 
-@inventory_blueprint.route('/purchase_order/create/<int:vendor_id>',
+
+@inventory_blueprint.route('/purchase_order/create',
                            methods=['GET', 'POST'])
-@inventory_blueprint.route('/purchase_order/create/',
+@inventory_blueprint.route('/purchase_order/create/<int:vendor_id>',
                            methods=['GET', 'POST'])
 @login_required
 def create_purchase_order(vendor_id=None):
+    # checking for the type of link used!
     if  vendor_id == None:
         show_vendor = True
         vendor = None
@@ -116,12 +118,36 @@ def create_purchase_order(vendor_id=None):
         vendor = Vendor.query.get_or_404(vendor_id)
         show_vendor = False
     form = PurchaseOrderForm()
+    for vendor in Vendor.query.all():
+        value = (str('(')+str(vendor.id)+str(')  ')+str(vendor.name),str('(')+str(vendor.id)+str(')  ')+str(vendor.name))
+        if value in form.vendor_id.choices:pass
+        else: form.vendor_id.choices.append(value)
+    for item in Component.query.all():
+        value = (str('(')+str(item.id)+str(')  ')+str(item.name),str('(')+str(item.id)+str(')  ')+str(item.name))
+        if value in form.item.choices:pass
+        else: form.item.choices.append(value)
+
     if form.validate_on_submit():
         with db.session.no_autoflush:
-            if vendor_id == None:
+            if vendor_id == 'Choose Vendor':
+                #flash choose vendor
+                flash('Choose a vendor', 'warning')
+                return render_template('/purchase_order/create.html',
+                                       form=form,
+                                       vendor=vendor,
+                                       show_vendor=show_vendor)
+            elif vendor_id == 'Choose Item':
+                #flash choose item
+                flash('Choose an Item', 'warning')
+                return render_template('/purchase_order/create.html',
+                                       form=form,
+                                       vendor=vendor,
+                                       show_vendor=show_vendor)
+            elif vendor_id == None:
                 vendor = Vendor.query.get_or_404(form.vendor_id.data[1])
-            else:
-                vendor = Vendor.query.get_or_404(vendor_id)
+
+
+
             order = PurchaseOrder()
             order.created_on = datetime.date.today()
             order.vendor = vendor
