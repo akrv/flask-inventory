@@ -106,7 +106,7 @@ def view_purchase_order(po_id=None):
 @inventory_blueprint.route('/purchase_order/create/<int:vendor_id>',
                            methods=['GET', 'POST'])
 @login_required
-def create_purchase_order(vendor_id):
+def create_purchase_order(vendor_id=None):
     vendor = Vendor.query.get_or_404(vendor_id)
     form = PurchaseOrderForm()
     if form.validate_on_submit():

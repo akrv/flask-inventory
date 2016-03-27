@@ -107,3 +107,16 @@ class Component(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(120), nullable=False)
+
+class Borrow(db.Model):
+    __tablename__ = "borrows"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    borrowed_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    borrowed_to = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reason = db.Column(db.String(120), nullable=False)
+    status = db.Column(db.String(120), nullable=False)
+    created_on = db.Column(db.DateTime, nullable=False)
+    borrowed_on = db.Column(db.DateTime, nullable=False)
+    returned_on = db.Column(db.DateTime, nullable=False)
+
