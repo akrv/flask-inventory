@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/akrv/flask-inventory/badge.svg?branch=master)](https://coveralls.io/github/akrv/flask-inventory?branch=master)
+[![Build Status](https://travis-ci.org/akrv/flask-inventory.svg)](https://travis-ci.org/akrv/flask-inventory) [![Coverage Status](https://coveralls.io/repos/github/akrv/flask-inventory/badge.svg?branch=master)](https://coveralls.io/github/akrv/flask-inventory?branch=master)
 # Flask Inventory
 
 Flask Inventory is an attempt to create an inventory management system for
