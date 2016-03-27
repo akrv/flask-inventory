@@ -54,7 +54,7 @@ app.register_blueprint(inventory_blueprint)
 from project.models import User
 
 login_manager.login_view = "user.login"
-login_manager.login_message_category = 'danger'
+login_manager.login_message_category = 'warning'
 
 
 @login_manager.user_loader
