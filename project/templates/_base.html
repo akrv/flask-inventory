@@ -59,19 +59,19 @@
             <li><a href="{{ url_for("inventory.view_vendor")}}">Vendors</a></li>
             <li>
               <ul class="nav nav-sidebar-submenu">
-                <li><a href="{{ url_for("inventory.view_vendor")}}">View</a></li>
-                <li><a href="{{ url_for("inventory.create_vendor")}}">Add</a></li>
+                {#<li><a href="{{ url_for("inventory.view_vendor")}}">View</a></li>#}
+                <li><a href="{{ url_for("inventory.create_vendor")}}"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
               </ul>
             </li>
             <li><a href="{{ url_for("inventory.view_purchase_order")}}">Purchase Orders</a></li>
-            <ul class="nav nav-sidebar-submenu">
+            <!--<ul class="nav nav-sidebar-submenu">
                 <li><a href="{{ url_for("inventory.view_purchase_order")}}">View</a></li>
 
-            </ul>
+            </ul>-->
             <li><a href="{{ url_for("inventory.view_component") }}">Component</a></li>
             <ul class="nav nav-sidebar-submenu">
-              <li><a href="{{ url_for("inventory.view_component") }}">View</a></li>
-              <li><a href="{{ url_for("inventory.create_component") }}">Create</a></li>
+              {#<li><a href="{{ url_for("inventory.view_component") }}">View</a></li>#}
+              <li><a href="{{ url_for("inventory.create_component") }}"> <span class="glyphicon glyphicon-plus"></span> Create</a></li>
             </ul>
               {% else %}
               {% endif %}

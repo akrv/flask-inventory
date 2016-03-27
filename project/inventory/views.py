@@ -9,9 +9,9 @@ from flask import render_template, Blueprint, url_for, \
 from flask.ext.login import login_required
 
 from project import db
-from project.models import Vendor, PurchaseOrder, LineItem, Component
+from project.models import Vendor, PurchaseOrder, LineItem, Component, Borrow
 from project.inventory.forms import VendorCreateForm, PurchaseOrderForm, \
-    ComponentCreateForm
+    ComponentCreateForm, BorrowForm
 
 ################
 #    config    #
@@ -105,18 +105,29 @@ def view_purchase_order(po_id=None):
 
 @inventory_blueprint.route('/purchase_order/create/<int:vendor_id>',
                            methods=['GET', 'POST'])
+@inventory_blueprint.route('/purchase_order/create/',
+                           methods=['GET', 'POST'])
 @login_required
 def create_purchase_order(vendor_id=None):
-    vendor = Vendor.query.get_or_404(vendor_id)
+    if  vendor_id == None:
+        show_vendor = True
+        vendor = None
+    else:
+        vendor = Vendor.query.get_or_404(vendor_id)
+        show_vendor = False
     form = PurchaseOrderForm()
     if form.validate_on_submit():
         with db.session.no_autoflush:
+            if vendor_id == None:
+                vendor = Vendor.query.get_or_404(form.vendor_id.data[1])
+            else:
+                vendor = Vendor.query.get_or_404(vendor_id)
             order = PurchaseOrder()
             order.created_on = datetime.date.today()
             order.vendor = vendor
             db.session.add(order)
             component = Component.query.filter_by(
-                id=int(form.item.data)).first()
+                id=int(form.item.data[1])).first()
             if component:
                 line1 = LineItem(component=component,
                                  quantity=form.quantity.data,
@@ -126,14 +137,40 @@ def create_purchase_order(vendor_id=None):
                 flash('Component not found.')
                 return render_template('/purchase_order/create.html',
                                        form=form,
-                                       vendor=vendor)
+                                       vendor=vendor,
+                                       show_vendor=show_vendor)
         db.session.commit()
         flash('Purchase Order Added', 'success')
         return redirect(url_for('.view_purchase_order', po_id=order.id))
-    return render_template('/purchase_order/create.html', form=form,
-                           vendor=vendor)
+    return render_template('/purchase_order/create.html', form=form,vendor=vendor,show_vendor=show_vendor)
 
 
+
+#########################
+#    Borrow             #
+#########################
+
+@inventory_blueprint.route('/borrow/create/<int:purchase_id>',
+                           methods=['GET', 'POST'])
+@login_required
+def create_borrow(purchase_id=None):
+    purchase = PurchaseOrder.query.get_or_404(purchase_id)
+    form = BorrowForm()
+
+    if form.validate_on_submit():
+        with db.session.no_autoflush:
+            borrow = Borrow()
+            borrow.created_on = datetime.date.today()
+            db.session.add(borrow)
+
+        db.session.commit()
+        flash('Item borrowed', 'success')
+    return render_template('/borrow/create.html', form=form,
+                           vendor=borrow)
+
+#########################
+#    Component          #
+#########################
 @inventory_blueprint.route('/component/create', methods=['GET', 'POST'])
 @login_required
 def create_component():

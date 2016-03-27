@@ -4,15 +4,7 @@
 {% block content %}
 
   <header class="content-header">
-
-
-  {% if show_vendor %}
-      <h1>Purchase Order</h1>
-  {% else %}
-      <h3>Purchase Order</h3>
-      <h1>{{ vendor.name }}</h1>
-  {% endif %}
-
+    <h1>Borrow Item</h1>
   </header>
 
   <br>
@@ -26,12 +18,10 @@
 
 
     <div class="form-inline">
-    {% if show_vendor %}
-        {{ wtf.form_field(form.vendor_id) }}
-    {% endif %}
-    {{ wtf.form_field(form.item) }}
-    {{ wtf.form_field(form.quantity) }}
-    {{ wtf.form_field(form.unit_price) }}
+
+      {{ wtf.form_field(form.) }}
+      {{ wtf.form_field(form.quantity) }}
+      {{ wtf.form_field(form.unit_price) }}
 
     </div>
     <div>
