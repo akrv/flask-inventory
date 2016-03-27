@@ -3,7 +3,6 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 class BaseConfig(object):
     """Base configuration."""
     SECRET_KEY = '823d352a91a90aecd86d3d0dc5a5844894c24338ad13639bc593fdb20330d67a'
@@ -13,6 +12,12 @@ class BaseConfig(object):
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
 
+    #ldap integration
+    # LDAP_HOST = 'ldap.example.com'
+    # LDAP_DOMAIN = 'example.com'
+    # LDAP_AUTH_TEMPLATE = 'uesr/login.html'
+    # LDAP_PROFILE_KEY = 'employeeID'
+    # LDAP_AUTH_VIEW = 'login'
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""

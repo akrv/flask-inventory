@@ -62,6 +62,13 @@ def load_user(user_id):
     return User.query.filter(User.id == int(user_id)).first()
 
 
+###################
+### flask-LDAP ####
+# #################
+# from flask.ext.ldap import LDAP
+# ldap = LDAP(app)
+# app.add_url_rule('/login', 'login', ldap.login, methods=['GET', 'POST'])
+
 ########################
 #### error handlers ####
 ########################
