@@ -141,7 +141,7 @@ class TestInventoryBlueprint(BaseTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_validate_purchase_order_form_data(self):
-        form = PurchaseOrderForm(item="1", quantity="10", unit_price="2.99")
+        form = PurchaseOrderForm(item="Choose Item", vendor_id="Choose Vendor", quantity="10", unit_price="2.99")
         self.assertTrue(form.validate())
 
     def test_invalid_purchase_order_form(self):
