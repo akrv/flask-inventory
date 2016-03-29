@@ -198,7 +198,7 @@ class TestInventoryBlueprint(BaseTestCase):
     def test_create_purchaseorder_requires_valid_input(self):
         with self.client:
             self.login()
-            response = self.create_purchase_order(False)
+            response = self.create_purchase_order(item=False)
         self.assertIn(b'<h1>Purchase Order</h1>', response.data)
 
     def test_create_purchaseorder_requires_valid_component(self):
