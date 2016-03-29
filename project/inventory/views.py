@@ -118,6 +118,7 @@ def create_purchase_order(vendor_id=None):
         vendor = Vendor.query.get_or_404(vendor_id)
         show_vendor = False
     form = PurchaseOrderForm()
+
     for vendor in Vendor.query.all():
         value = (str('(')+str(vendor.id)+str(')  ')+str(vendor.name),str('(')+str(vendor.id)+str(')  ')+str(vendor.name))
         if value in form.vendor_id.choices:pass
@@ -129,14 +130,14 @@ def create_purchase_order(vendor_id=None):
 
     if form.validate_on_submit():
         with db.session.no_autoflush:
-            if vendor_id == 'Choose Vendor':
+            if form.vendor_id.data == 'Choose Vendor':
                 #flash choose vendor
                 flash('Choose a vendor', 'warning')
                 return render_template('/purchase_order/create.html',
                                        form=form,
                                        vendor=vendor,
                                        show_vendor=show_vendor)
-            elif vendor_id == 'Choose Item':
+            elif form.item.data == 'Choose Item':
                 #flash choose item
                 flash('Choose an Item', 'warning')
                 return render_template('/purchase_order/create.html',
@@ -144,17 +145,15 @@ def create_purchase_order(vendor_id=None):
                                        vendor=vendor,
                                        show_vendor=show_vendor)
             elif vendor_id == None:
-                vendor = Vendor.query.get_or_404(form.vendor_id.data[1])
-
-
+                vendor = Vendor.query.get_or_404(int_id_form(form.vendor_id.data))
 
             order = PurchaseOrder()
             order.created_on = datetime.date.today()
             order.vendor = vendor
             db.session.add(order)
             component = Component.query.filter_by(
-                id=int(form.item.data[1])).first()
-            if component:
+                id=int_id_form(form.item.data)).first()
+            if component.id == int(form.item.data[1]):
                 line1 = LineItem(component=component,
                                  quantity=form.quantity.data,
                                  unit_price=form.unit_price.data)
@@ -225,3 +224,6 @@ def view_component(component_id=None):
         return render_template('component/view.html', result=component)
     component = Component.query.all()
     return render_template('/component/view_all.html', result=component)
+
+def int_id_form(id_name_string):
+    return int(id_name_string[id_name_string.index('(')+1:id_name_string.index(')')])
