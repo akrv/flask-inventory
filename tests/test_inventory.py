@@ -186,7 +186,7 @@ class TestInventoryBlueprint(BaseTestCase):
             self.create_purchase_order()
         response = self.client.get('/purchase_order/1', follow_redirects=True)
         self.assertIn(b'Achme', response.data)
-        self.assertIn(b'widget', response.data)
+        self.assertIn(b'<h2>Vendor</h2>', response.data)
 
     def test_view_purchase_order_all(self):
         with self.client:
