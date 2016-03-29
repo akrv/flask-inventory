@@ -75,7 +75,7 @@ class TestInventoryBlueprint(BaseTestCase):
         self.login()
         self.create_vendor()
         self.create_component()
-        return self.client.post('/purchase_order/create/1',
+        return self.client.post('/purchase_order/create',
                          data=dict(item='('+str(item)+')', vendor_id='('+str(1)+')', quantity=quantity, unit_price=2),
                          follow_redirects=True)
 
