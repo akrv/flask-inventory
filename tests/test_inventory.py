@@ -204,9 +204,9 @@ class TestInventoryBlueprint(BaseTestCase):
     def test_create_purchaseorder_requires_valid_component(self):
         with self.client:
             self.login()
-            response = self.create_purchase_order(item=5)
+            response = self.create_purchase_order(item='('+str(5)+')')
         self.assertIn(b'<h3>Purchase Order</h3>', response.data)
-        #self.assertIn(b'Component not found.', response.data)
+        self.assertIn(b'Component not found.', response.data)
 
     def test_view_component(self):
         with self.client:
