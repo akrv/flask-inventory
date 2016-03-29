@@ -79,6 +79,13 @@ class TestInventoryBlueprint(BaseTestCase):
                          data=dict(item=item, vendor_id=1, quantity=quantity, unit_price=2),
                          follow_redirects=True)
 
+    def create_purchase_order_wrong(self):
+        self.login()
+        self.create_vendor()
+        self.create_component()
+        return self.client.post('/purchase_order/create/1',
+                                data=dict(unit_price=2),
+                                follow_redirects=True)
 
     def test_view_all_vendors(self):
         with self.client:
@@ -198,7 +205,7 @@ class TestInventoryBlueprint(BaseTestCase):
     def test_create_purchaseorder_requires_valid_input(self):
         with self.client:
             self.login()
-            response = self.create_purchase_order(item=False)
+            response = self.create_purchase_order_wrong()
         self.assertIn(b'<h1>Purchase Order</h1>', response.data)
 
     def test_create_purchaseorder_requires_valid_component(self):
